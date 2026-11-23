@@ -23,6 +23,7 @@ Browser  ──request──▶  SourdoughWeb (Hummingbird server)  ──calls�
 | Part | Folder | Job |
 | --- | --- | --- |
 | Logic | `Sources/SourdoughCore/` | All bread rules and math. No UI, no web code. Reusable by a future iOS app. |
+| Data | `Sources/SourdoughData/` | Supabase: login, load/save jars. Converts database rows ↔ Core types. Schema in `supabase/migrations/`. |
 | Web server + UI | `Sources/SourdoughWeb/` | `main.swift` = routes (URL → code). `Page.swift` = HTML pages. `RecipeDTO.swift` = JSON shapes. |
 | CLI | `Sources/SourdoughApp/` | Terminal version, handy for quick checks. |
 | Tests | `Tests/SourdoughCoreTests/` | Tests for the logic. |
@@ -117,6 +118,9 @@ The face says what the jar needs. No labels or extra screens are required.
 | **Starving** | Long overdue; hooch (liquid) on top | Discard and feed, maybe twice |
 | **Sleepy** | In the fridge | Nothing; feed before baking |
 | **Baby** | New starter, first ~7 days | Feed daily; it's still getting going |
+| **Spoiled** | Pink or orange streaks reported | Throw it out and start over |
+
+The exact rules and their King Arthur sources are in [STARTER_RULES.md](STARTER_RULES.md). Where this table and that file disagree, STARTER_RULES.md wins.
 
 Dough jars use simpler faces: **Rising**, **Ready** (bake / stretch now), **Over-proofed**.
 

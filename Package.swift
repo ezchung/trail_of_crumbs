@@ -11,6 +11,8 @@ let package = Package(
         // 2.27+ requires Swift 6.2. We're on 6.1.3 (see .swift-version), so cap below it.
         // After `swiftly install 6.2 && swiftly use 6.2`, change this to: from: "2.28.1"
         .package(url: "https://github.com/hummingbird-project/hummingbird.git", "2.0.0"..<"2.27.0"),
+        // Database + login. 2.55.7 is the version tested on Linux with Swift 6.1.3.
+        .package(url: "https://github.com/supabase/supabase-swift.git", from: "2.55.7"),
     ],
     targets: [
         // Pure logic (recipes, math). No UI here, so it can be reused later by
@@ -31,9 +33,21 @@ let package = Package(
                 .product(name: "Hummingbird", package: "hummingbird"),
             ]),
 
+        // Saving and loading jars in Supabase. Converts database rows to Core
+        // types so SourdoughCore never depends on Supabase.
+        .target(
+            name: "SourdoughData",
+            dependencies: [
+                "SourdoughCore",
+                .product(name: "Supabase", package: "supabase-swift"),
+            ]),
+
         // Tests for the logic, run with `swift test`.
         .testTarget(
             name: "SourdoughCoreTests",
             dependencies: ["SourdoughCore"]),
+        .testTarget(
+            name: "SourdoughDataTests",
+            dependencies: ["SourdoughData"]),
     ]
 )
